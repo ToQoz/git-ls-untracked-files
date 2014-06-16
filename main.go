@@ -23,7 +23,9 @@ func main() {
 	flag.Usage = usage
 	flag.Parse()
 
-	cmd := exec.Command("git", []string{"ls-files", flag.Arg(0)}...)
+	targetDir := flag.Arg(0)
+
+	cmd := exec.Command("git", []string{"ls-files", targetDir}...)
 	result, err := cmd.Output()
 
 	if err != nil {
@@ -33,7 +35,8 @@ func main() {
 
 	trackedFiles := strings.Split(string(result), "\n")
 
-	filepath.Walk("./"+flag.Arg(0), func(path string, info os.FileInfo, err error) error {
+	filepath.Walk("./"+targetDir, func(path string, info os.FileInfo, err error) error {
+
 		if info.IsDir() {
 			// skip .git dir
 			if path == ".git" {
