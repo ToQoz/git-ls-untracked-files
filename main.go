@@ -10,7 +10,17 @@ import (
 	"strings"
 )
 
+func usage() {
+	banner := "usage: git ls-untracked-files [<directory>]"
+
+	fmt.Fprintf(os.Stderr, banner)
+	flag.PrintDefaults()
+	fmt.Fprintf(os.Stderr, "\n")
+	os.Exit(1)
+}
+
 func main() {
+	flag.Usage = usage
 	flag.Parse()
 
 	cmd := exec.Command("git", []string{"ls-files", flag.Arg(0)}...)
